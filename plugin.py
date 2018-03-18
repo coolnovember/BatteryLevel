@@ -96,7 +96,17 @@ class BasePlugin:
 
         # find zwave controller(s)... only one active allowed !
         self.error = True
-        controllers = glob.glob("./Config/zwcfg_0x????????.xml")
+        #controllers = glob.glob("./Config/zwcfg_0x????????.xml")
+        script_file=os.path.realpath(__file__)
+        print ("This script is at {}".format(str(script_file)))
+        script_dir=os.path.dirname(script_file)
+        print ("This script lives in {}".format(str(script_dir)))
+        config_path=os.path.join(script_dir,"../../","Config")
+        print ("We should look for zwave cfg in {}".format(str(config_path)))
+        config_path_clean=os.path.abspath(config_path)
+        print ("Clean config path = {}".format(str(config_path_clean)))
+        Domoticz.Log("We should look for zwave cfg in {}".format(str(config_path_clean)))
+        controllers = glob.glob(os.path.join(config_path_clean,"./zwcfg_0x????????.xml"))
         if not controllers:
             # test if we are running on a synology (different file locations)
             controllers = glob.glob("/volume1/@appstore/domoticz/var/zwcfg_0x????????.xml")
